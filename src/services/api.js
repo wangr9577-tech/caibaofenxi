@@ -2,19 +2,16 @@
 
 import axios from 'axios';
 
-// 1. 创建一个 Axios 实例
+// --- 关键修改 ---
+// 在生产环境中，Vite会把 import.meta.env.PROD 设为 true
+// 我们稍后会在 Vercel 上设置 VITE_API_BASE_URL 这个环境变量
+const baseURL = import.meta.env.PROD 
+  ? import.meta.env.VITE_API_BASE_URL 
+  : 'http://127.0.0.1:8000';
+
 const apiClient = axios.create({
-  // 设置后端API的基础URL
-  // 这样我们在调用时就不用每次都写完整的 "http://127.0.0.1:8000"
-  baseURL: 'http://127.0.0.1:8000',
-  
-  // 设置请求超时时间（例如5分钟）
-  timeout: 3000000,
-  
-  // 设置通用的请求头 (如果需要的话)
-  headers: {
-    'Content-Type': 'application/json',
-  }
+  baseURL: baseURL,
+  // ... 其他配置
 });
 
 // 2. (可选) 添加请求拦截器
